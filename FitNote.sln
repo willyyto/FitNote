@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitNote", "FitNote\FitNote.csproj", "{51FE11A8-241F-4BB1-8887-9DCD0ABAAC1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitNote.Core", "FitNote.Core\FitNote.Core.csproj", "{C81330B9-04A6-4FF1-8DD1-776DC2940D36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitNote.Infra", "FitNote.Infra\FitNote.Infra.csproj", "{5778EC31-60B3-4880-B48F-3E752494F9D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51FE11A8-241F-4BB1-8887-9DCD0ABAAC1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51FE11A8-241F-4BB1-8887-9DCD0ABAAC1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51FE11A8-241F-4BB1-8887-9DCD0ABAAC1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51FE11A8-241F-4BB1-8887-9DCD0ABAAC1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C81330B9-04A6-4FF1-8DD1-776DC2940D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C81330B9-04A6-4FF1-8DD1-776DC2940D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C81330B9-04A6-4FF1-8DD1-776DC2940D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C81330B9-04A6-4FF1-8DD1-776DC2940D36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5778EC31-60B3-4880-B48F-3E752494F9D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5778EC31-60B3-4880-B48F-3E752494F9D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5778EC31-60B3-4880-B48F-3E752494F9D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5778EC31-60B3-4880-B48F-3E752494F9D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
