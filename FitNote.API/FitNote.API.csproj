@@ -13,7 +13,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="HotChocolate.Data" Version="13.9.0"/>
+        <PackageReference Include="HotChocolate.Data" Version="15.1.7"/>
         <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.7"/>
         <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="15.1.7"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3"/>

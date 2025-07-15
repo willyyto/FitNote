@@ -13,16 +13,24 @@ public static class MiddlewareExtensions {
 
   public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder app) {
     return app.Use(async (context, next) => {
-      context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-      context.Response.Headers.Add("X-Frame-Options", "DENY");
-      context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
-      context.Response.Headers.Add("Referrer-Policy", "strict-origin-when-cross-origin");
-      context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
-      context.Response.Headers.Add("X-Robots-Tag", "noindex, nofollow");
-      
-      if (context.Request.IsHttps) {
-        context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
-      }
+      // Add security headers before the response starts
+      context.Response.OnStarting(() => {
+        if (!context.Response.HasStarted) {
+          var headers = context.Response.Headers;
+          
+          headers.TryAdd("X-Content-Type-Options", "nosniff");
+          headers.TryAdd("X-Frame-Options", "DENY");
+          headers.TryAdd("X-XSS-Protection", "1; mode=block");
+          headers.TryAdd("Referrer-Policy", "strict-origin-when-cross-origin");
+          headers.TryAdd("X-Permitted-Cross-Domain-Policies", "none");
+          headers.TryAdd("X-Robots-Tag", "noindex, nofollow");
+          
+          if (context.Request.IsHttps) {
+            headers.TryAdd("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+          }
+        }
+        return Task.CompletedTask;
+      });
       
       await next();
     });

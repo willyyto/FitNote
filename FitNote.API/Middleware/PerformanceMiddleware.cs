@@ -14,6 +14,14 @@ public class PerformanceMiddleware {
   public async Task InvokeAsync(HttpContext context) {
     var stopwatch = Stopwatch.StartNew();
     
+    // Register callback to add header before response starts
+    context.Response.OnStarting(() => {
+      if (!context.Response.HasStarted && stopwatch.IsRunning) {
+        context.Response.Headers.Add("X-Response-Time", $"{stopwatch.ElapsedMilliseconds}ms");
+      }
+      return Task.CompletedTask;
+    });
+    
     try {
       await _next(context);
     }
@@ -37,9 +45,6 @@ public class PerformanceMiddleware {
           context.Request.Path,
           context.Response.StatusCode);
       }
-
-      // Add performance header for debugging
-      context.Response.Headers.Add("X-Response-Time", $"{elapsed}ms");
     }
   }
 }
