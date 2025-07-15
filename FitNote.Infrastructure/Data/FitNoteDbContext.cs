@@ -32,7 +32,7 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.Property(e => e.CreatedAt).IsRequired();
       entity.Property(e => e.IsDefault).IsRequired();
 
-      // Configure SecondaryMuscleGroups with proper value comparer
+      // Fixed: Configure SecondaryMuscleGroups with proper value comparer
       var muscleGroupsComparer = new ValueComparer<ICollection<MuscleGroup>>(
         (c1, c2) => c1!.SequenceEqual(c2!),
         c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
@@ -88,7 +88,7 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.ToTable("Workouts");
       entity.HasKey(w => w.Id);
       entity.Property(w => w.Name).IsRequired().HasMaxLength(100);
-      entity.Property(w => w.Notes).HasMaxLength(500); // Changed from Description to Notes
+      entity.Property(w => w.Notes).HasMaxLength(500);
       entity.Property(w => w.Date).IsRequired();
       entity.Property(w => w.Status).IsRequired().HasConversion<string>();
       entity.Property(w => w.CreatedAt).IsRequired();
@@ -114,7 +114,7 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
     builder.Entity<WorkoutExercise>(entity => {
       entity.ToTable("WorkoutExercises");
       entity.HasKey(we => we.Id);
-      entity.Property(we => we.Order).IsRequired(); // Changed from OrderIndex to Order
+      entity.Property(we => we.Order).IsRequired();
       entity.Property(we => we.CreatedAt).IsRequired();
 
       // Configure relationships
@@ -143,7 +143,7 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.ToTable("ExerciseSets");
       entity.HasKey(s => s.Id);
       entity.Property(s => s.SetNumber).IsRequired();
-      entity.Property(s => s.Type).IsRequired().HasConversion<string>(); // Changed from SetType to Type
+      entity.Property(s => s.Type).IsRequired().HasConversion<string>();
       entity.Property(s => s.Weight).HasPrecision(5, 2);
       entity.Property(s => s.Distance).HasPrecision(8, 2);
       entity.Property(s => s.Duration).HasColumnType("time");
@@ -160,7 +160,7 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.HasIndex(s => s.SetNumber);
     });
 
-    // Configure UserSubscription entity
+    // Fixed: Configure UserSubscription entity with proper one-to-one relationship
     builder.Entity<UserSubscription>(entity => {
       entity.ToTable("UserSubscriptions");
       entity.HasKey(us => us.Id);
@@ -169,14 +169,14 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.Property(us => us.IsActive).IsRequired();
       entity.Property(us => us.CreatedAt).IsRequired();
 
-      // Configure one-to-one relationship properly
+      // Fixed: Proper one-to-one relationship configuration
       entity.HasOne(us => us.User)
         .WithOne(u => u.Subscription)
         .HasForeignKey<UserSubscription>(us => us.UserId)
         .OnDelete(DeleteBehavior.Cascade);
 
       // Configure indexes
-      entity.HasIndex(us => us.UserId);
+      entity.HasIndex(us => us.UserId).IsUnique();
       entity.HasIndex(us => us.IsActive);
     });
 

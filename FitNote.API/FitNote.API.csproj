@@ -27,5 +27,9 @@
         <ProjectReference Include="..\FitNote.Infrastructure\FitNote.Infrastructure.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="logs\" />
+    </ItemGroup>
+
 </Project>
 

@@ -25,7 +25,6 @@
         <Folder Include="GraphQL\Queries\"/>
         <Folder Include="GraphQL\Subscriptions\"/>
         <Folder Include="Mappers\"/>
-        <Folder Include="Services\"/>
     </ItemGroup>
 
 
