@@ -1,9 +1,8 @@
 namespace FitNote.Core.Enums;
 
-public enum WorkoutStatus
-{
-    Planned,
-    InProgress,
-    Completed,
-    Cancelled
+public enum WorkoutStatus {
+  Planned,
+  InProgress,
+  Completed,
+  Cancelled
 }

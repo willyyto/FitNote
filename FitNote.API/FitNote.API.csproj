@@ -7,28 +7,24 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.7" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.7"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="HotChocolate.Data" Version="13.9.0" />
-        <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.7" />
-        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="15.1.7" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
-        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+        <PackageReference Include="HotChocolate.Data" Version="13.9.0"/>
+        <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.7"/>
+        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="15.1.7"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FitNote.Application\FitNote.Application.csproj" />
-        <ProjectReference Include="..\FitNote.Infrastructure\FitNote.Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Extensions\" />
+        <ProjectReference Include="..\FitNote.Application\FitNote.Application.csproj"/>
+        <ProjectReference Include="..\FitNote.Infrastructure\FitNote.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

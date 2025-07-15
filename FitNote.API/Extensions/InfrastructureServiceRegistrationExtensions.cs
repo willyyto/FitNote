@@ -3,14 +3,12 @@ using FitNote.Infrastructure.Data;
 using FitNote.Infrastructure.Repositories;
 using FitNote.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FitNote.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions {
-  public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
-  {
+  public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
+    IConfiguration configuration) {
     // Add DbContext
     services.AddDbContext<FitNoteDbContext>(options =>
       options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
@@ -26,5 +24,4 @@ public static class ServiceCollectionExtensions {
 
     return services;
   }
-
 }

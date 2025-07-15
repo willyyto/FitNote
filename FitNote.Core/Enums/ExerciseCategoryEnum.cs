@@ -1,12 +1,11 @@
 namespace FitNote.Core.Enums;
 
-public enum ExerciseCategory
-{
-    Strength,
-    Cardio,
-    Flexibility,
-    Balance,
-    Sports,
-    Rehabilitation,
-    BodyWeight
+public enum ExerciseCategory {
+  Strength,
+  Cardio,
+  Flexibility,
+  Balance,
+  Sports,
+  Rehabilitation,
+  BodyWeight
 }

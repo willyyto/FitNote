@@ -23,17 +23,6 @@ public class UnitOfWork : IUnitOfWork {
     return (IRepository<T>)GetRepository<IRepository<T>, Repository<T>>();
   }
 
-  private object GetRepository<TInterface, TImplementation>()
-    where TImplementation : class {
-    var type = typeof(TInterface);
-    if (_repositories.TryGetValue(type, out var repository))
-      return repository;
-
-    repository = Activator.CreateInstance(typeof(TImplementation), _context)!;
-    _repositories[type] = repository;
-    return repository;
-  }
-
   public async Task<int> SaveChangesAsync() {
     return await _context.SaveChangesAsync();
   }
@@ -61,5 +50,16 @@ public class UnitOfWork : IUnitOfWork {
   public void Dispose() {
     _transaction?.Dispose();
     _context.Dispose();
+  }
+
+  private object GetRepository<TInterface, TImplementation>()
+    where TImplementation : class {
+    var type = typeof(TInterface);
+    if (_repositories.TryGetValue(type, out var repository))
+      return repository;
+
+    repository = Activator.CreateInstance(typeof(TImplementation), _context)!;
+    _repositories[type] = repository;
+    return repository;
   }
 }

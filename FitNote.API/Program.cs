@@ -23,15 +23,17 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddApiServices(builder.Configuration);
 
+// Add controllers for health checks and additional endpoints
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 // Initialize database
-using (var scope = app.Services.CreateScope())
-{
+using (var scope = app.Services.CreateScope()) {
   var context = scope.ServiceProvider.GetRequiredService<FitNoteDbContext>();
   var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
   var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-    
+
   await DbInitializer.InitializeAsync(context, userManager, roleManager);
 }
 
@@ -39,13 +41,34 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment()) {
   app.UseDeveloperExceptionPage();
 }
+else {
+  app.UseExceptionHandler("/Error");
+  app.UseHsts();
+}
 
 app.UseHttpsRedirection();
+
+// Apply CORS policy
+app.UseCors("AllowAll");
+
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Map controllers
+app.MapControllers();
+
+// Map GraphQL
 app.MapGraphQL();
 
-app.Run();
+try {
+  Log.Information("Starting FitNote API");
+  app.Run();
+}
+catch (Exception ex) {
+  Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally {
+  Log.CloseAndFlush();
+}

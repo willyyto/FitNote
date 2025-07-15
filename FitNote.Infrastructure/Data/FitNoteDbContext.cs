@@ -1,10 +1,10 @@
+using System.Text.Json;
 using FitNote.Core.Entities;
 using FitNote.Core.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Text.Json;
 
 namespace FitNote.Infrastructure.Data;
 
@@ -32,7 +32,7 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.Property(e => e.CreatedAt).IsRequired();
       entity.Property(e => e.IsDefault).IsRequired();
 
-      // Configure SecondaryMuscleGroups with proper type matching
+      // Configure SecondaryMuscleGroups with proper value comparer
       var muscleGroupsComparer = new ValueComparer<ICollection<MuscleGroup>>(
         (c1, c2) => c1!.SequenceEqual(c2!),
         c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
@@ -40,8 +40,8 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
 
       entity.Property(e => e.SecondaryMuscleGroups)
         .HasConversion(
-          v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null!),
-          v => JsonSerializer.Deserialize<List<MuscleGroup>>(v, (JsonSerializerOptions)null!) ?? new List<MuscleGroup>()
+          v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+          v => JsonSerializer.Deserialize<List<MuscleGroup>>(v, (JsonSerializerOptions?)null) ?? new List<MuscleGroup>()
         )
         .Metadata.SetValueComparer(muscleGroupsComparer);
 
@@ -88,7 +88,7 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.ToTable("Workouts");
       entity.HasKey(w => w.Id);
       entity.Property(w => w.Name).IsRequired().HasMaxLength(100);
-      entity.Property(w => w.Description).HasMaxLength(500);
+      entity.Property(w => w.Notes).HasMaxLength(500); // Changed from Description to Notes
       entity.Property(w => w.Date).IsRequired();
       entity.Property(w => w.Status).IsRequired().HasConversion<string>();
       entity.Property(w => w.CreatedAt).IsRequired();
@@ -114,7 +114,7 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
     builder.Entity<WorkoutExercise>(entity => {
       entity.ToTable("WorkoutExercises");
       entity.HasKey(we => we.Id);
-      entity.Property(we => we.OrderIndex).IsRequired();
+      entity.Property(we => we.Order).IsRequired(); // Changed from OrderIndex to Order
       entity.Property(we => we.CreatedAt).IsRequired();
 
       // Configure relationships
@@ -143,10 +143,9 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.ToTable("ExerciseSets");
       entity.HasKey(s => s.Id);
       entity.Property(s => s.SetNumber).IsRequired();
-      entity.Property(s => s.SetType).IsRequired().HasConversion<string>();
+      entity.Property(s => s.Type).IsRequired().HasConversion<string>(); // Changed from SetType to Type
       entity.Property(s => s.Weight).HasPrecision(5, 2);
       entity.Property(s => s.Distance).HasPrecision(8, 2);
-      // Don't set precision for Duration - TimeSpan maps to SQL Server time(7) by default
       entity.Property(s => s.Duration).HasColumnType("time");
       entity.Property(s => s.CreatedAt).IsRequired();
 
@@ -170,10 +169,10 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
       entity.Property(us => us.IsActive).IsRequired();
       entity.Property(us => us.CreatedAt).IsRequired();
 
-      // Configure relationships
+      // Configure one-to-one relationship properly
       entity.HasOne(us => us.User)
-        .WithMany()
-        .HasForeignKey(us => us.UserId)
+        .WithOne(u => u.Subscription)
+        .HasForeignKey<UserSubscription>(us => us.UserId)
         .OnDelete(DeleteBehavior.Cascade);
 
       // Configure indexes
@@ -183,15 +182,10 @@ public class FitNoteDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid
 
     // Configure Identity tables with custom names
     builder.Entity<IdentityRole<Guid>>(entity => { entity.ToTable("Roles"); });
-
     builder.Entity<IdentityUserRole<Guid>>(entity => { entity.ToTable("UserRoles"); });
-
     builder.Entity<IdentityUserClaim<Guid>>(entity => { entity.ToTable("UserClaims"); });
-
     builder.Entity<IdentityUserLogin<Guid>>(entity => { entity.ToTable("UserLogins"); });
-
     builder.Entity<IdentityRoleClaim<Guid>>(entity => { entity.ToTable("RoleClaims"); });
-
     builder.Entity<IdentityUserToken<Guid>>(entity => { entity.ToTable("UserTokens"); });
   }
 }
